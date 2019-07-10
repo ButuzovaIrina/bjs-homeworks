@@ -33,17 +33,19 @@ showSolutionsMessage( 7, 20, - 3 );
 function getAverageScore( data ) {
   let average = 0,
   i =0;
+  dataRes = {};
+  //5.Предусмотрите работу программы для случая, когда предметов в объекте data будет менее 10.
+if ( Object.keys(data).length < 10) {  
   for (let prop in data) {
-    average += averageCount(data [prop]);
+    dataRes[prop] = averageCount(data[prop]);
+    average += averageCount(data[prop]);
     i++;
-     
-  console.log(average/i);
-  data.average = average/i;
   }
- 
-  return data;
-  
-  
+  dataRes.average = Math.round(average/i);
+  return dataRes;
+  } else {
+    return "Слишком много предметов";
+  }
 }
 
 function averageCount( count ) {
@@ -51,12 +53,13 @@ function averageCount( count ) {
     for ( let i = 0; i < count.length; i++) {
       averageSub += count [ i ];
     }
-  return averageSub/count.length;
+  return Math.round(averageSub/count.length);
 }
   console.log(getAverageScore({ 
-    algebra: [2, 5, 4, 5],
+    algebra: [2, 5, 4, 5, 1,1],
     english: [3, 4, 5],
-    poems: [2, 5, 5]
+    fisica: [1,1,1,1,1],
+    poems: [2, 5, 5,5,5]
   }))
 
 //3
