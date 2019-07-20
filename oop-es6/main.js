@@ -1,4 +1,4 @@
-class Weapon {
+/*class Weapon {
   constructor(name, attack, durability, range) {
     this.name = name;
     this.attack = attack;
@@ -44,7 +44,7 @@ const battleax = new Weapon('Секира', 27, 800, 1);
 const stormStaff = new Weapon('Посох бури', 10, 300, 3);*/
 
 // Задача 2
-
+/*
 class Arm extends Weapon {
   constructor(name, attack, durability, range) {
     super (name, attack, durability, range);
@@ -219,68 +219,66 @@ class StudentLog {
   }
 
   addGrade(grade, subject) { 
-    if (isNaN(parseInt(grade))) {
-      console.log(`Вы пытались поставить оценку ${grade} по предмету ${subject}. Допускаются только числа от 1 до 5.`);
-    }
-    if (this.marks.length === 0) {
-      this.marks.push({subjectName: subject, mark: [grade]});
-    }
-    for (let i = 0; i < this.marks.length; i++) {
-      if (this.marks[i].subjectName === subject) {
-        //console.log(this.marks[i]);
-        this.marks[i].mark.push(grade);
+
+   if ((isNaN(parseInt(grade)) || (grade > 5) || (grade === 0))) {
+      console.log(`Вы пытались поставить оценку\'${grade}\'по предмету \'${subject}\'. Допускаются только числа от 1 до 5.`);
+      return this.marks;
+    } 
+      if (!this.marks.some((item, i) => this.marks[i].subjectName === subject)) {
+        this.marks.push({subjectName: subject, mark: [grade]}); 
       } else {
-        this.marks.push({subjectName: subject, mark: [grade]});
+        let index = this.marks.findIndex(markIndex => markIndex.subjectName === subject);
+        this.marks[index].mark.push(grade);
       }
-    }  
-    return this.marks;
+     return this.marks;
   }
 
   getAverageBySubject(subject) {
-    let subjectIndex;// = this.marks.indexOf(this.marks.subjectName = subject);
-    for (let i = 0; i < this.marks.length; i++) {
-      if (this.marks[i].subjectName === subject) {
-        subjectIndex = i;
-        break;
-      }
+    let index = this.marks.findIndex(markIndex => markIndex.subjectName === subject);
+    if (index === -1) {
+      return 0;
+    } else {
+      let averageBySubject = 0;       
+      return averageBySubject = (this.marks[index].mark.reduce(function(sum, current){
+        return sum + current })) / this.marks[index].mark.length;  
     }
-    console.log(subjectIndex, this.marks[subjectIndex].mark.length);
-    let average = 0;
-    for (let i = 0; i < this.marks[subjectIndex].mark.length; i++) {
-      average += this.marks[subjectIndex].mark[i];
-      console.log(this.marks[subjectIndex].mark[i], average);
+  }
+
+  getToralAverage(){
+    let average  = 0;
+    if (this.marks.length === 0) {
+      return 0;
     }
-    return average = average/this.marks[subjectIndex].mark.length;
+    this.marks.forEach(function(item, i) {
+      average += (item.mark.reduce(function(sum, current){
+        return sum + current })) / item.mark.length;
+      })
+    return average / this.marks.length; 
   }
 }
 
+
+
 const log = new StudentLog('Олег Никифоров');
 
-
-/*
 console.log(log.getName()) // Олег Никифоров
-
-console.log(log.addGrade(5, 'algebra'));
 console.log(log.addGrade(4, 'algebra'));
-console.log(log.addGrade(5, 'algebra'));
-// 1
-console.log(log.addGrade(5, 'geometry'));
+console.log(log.addGrade(2, 'geometry'));
+console.log(log.addGrade(4, 'algebra'));
+console.log(log.addGrade(4, 'algebra'));
+console.log(log.addGrade(2, 'geometry'));
+console.log(log.addGrade(3, 'poem'));
+console.log(log.addGrade(5, 'fisica'));
+console.log(log.addGrade(2, 'geometry'));
+console.log(log.addGrade('kkkkk', 'poem'));
+console.log(log.addGrade(5, 'fisica'));
+console.log(log.addGrade(2, 'geometry'));
 console.log(log.addGrade(3, 'poem'));
 console.log(log.addGrade(5, 'fisica'));
 
-console.log(log.addGrade('отлично!', 'math'));
-// Вы пытались поставить оценку "отлично!" по предмету "math". Допускаются только числа от 1 до 5.
-// 0
+console.log('Средний балл алгебра ' + log.getAverageBySubject('algebra')); // 1
+console.log('Средний балл geometry ' + log.getAverageBySubject('geometry')); // 2
 
-console.log(log.addGrade(4, 'algebra'));
-// 1
+console.log('Средний балл math ' + log.getAverageBySubject('math')); // 0
 
-
-
-console.log(log.addGrade(25, 'geometry'));
-// Вы пытались поставить оценку "25" по предмету "geometry". Допускаются только числа от 1 до 5.
-// 1 */
-//console.log(log.getAverageBySubject('algebra')); // 3
-//console.log(log.getAverageBySubject('geometry')); // 4.5
-
-//console.log(log.getAverageBySubject('math')); // 0
+console.log('Средний балл вообще ' + log.getToralAverage()); // 3,75
