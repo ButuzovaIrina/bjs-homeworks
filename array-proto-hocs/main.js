@@ -1,61 +1,53 @@
 function compareArrays(arr1, arr2) {
    if (arr1.length === arr2.length) {
-     return !arr1.some((item, i) => item != arr2[i]); 
+     return arr1.every((item, i) => item === arr2[i]); 
    } else {
      return false;
    }
 }
 
 const sum = (a, b) => (a + b);
-const mSum = memoize(sum, 10); 
-console.log(sum(5, 8));
+const mSum = memoize(sum, 2); 
 
 function memoize(fn, limit){
-   let results = [];
-   console.log(fn, limit);
-     return function () {
-    let arrArguments = Array.from(arguments).join(', ');
-   console.log(arrArguments); 
-   
-    res = fn();
-  console.log(results);
-   console.log(res);
-     results.push({arrArguments, res});
-   console.log('2  ' + results);
-     }
-   /*   
-   if (!results.includes(arrArguments)) {
-
-     if (results.length < limit) {
-      
-      console.log("lll" + results);
-        } else {
+  let results = []; 
+  return function () {
+    let arrArguments = Array.from(arguments);
+    let index = 0; 
+    if (results.length > (limit - 1)) {
       results.shift();
-      results.push({arrArguments, fn});
-     }
-   } */
-   
+    }
+
+    if (results.length === 0) {
+      res = fn(...arrArguments);
+      results.push({arrArguments, res});
+      resPrint = results[0];
+      return resPrint;
+    } else {
+      results.forEach(function (item, index) {
+        if (compareArrays(item.arrArguments, arrArguments)) {
+          resPrint = item;
+        } else {
+          res = fn(...arrArguments);
+          results.push({arrArguments, res});       
+          resPrint = results[results.length - 1];
+        }
+      })
+    return resPrint;
+    }
+     
+  }
 }
 
 
 
 
-console.log (mSum(3, 4)); // 7
-console.log (mSum(53, 4)); // 7
-console.log (mSum(34, 4)); // 7
-console.log (mSum(3, 4)); // 7
-/*console.log (memoize(sum(5, 4 ), 10)); // 7
-console.log (memoize(sum(3, 14 ), 10)); // 7
-console.log (memoize(sum(3, 4 ), 10)); // 7
-console.log (memoize(sum(5, 4 ), 10)); // 7
-console.log (memoize(sum(3, 14 ), 10)); // 7
-console.log (memoize(sum(3, 4 ), 10)); // 7
-console.log (memoize(sum(5, 4 ), 10)); // 7
-console.log (memoize(sum(3, 14 ), 10)); // 7
-console.log (memoize(sum(3, 4 ), 10)); // 7
-console.log (memoize(sum(5, 4 ), 10)); // 7
-console.log (memoize(sum(3, 14 ), 10)); // 7
-*/
+console.log(mSum(3, 4));
+console.log(mSum(3, 4)); // 7
+console.log(mSum(13, 5)); // 18
+console.log(mSum(53, 4)); // 57
+console.log(mSum(5, 4)); // 9
+
 
 console.log(compareArrays([8, 9], [6])); // false, разные значения
 console.log(compareArrays([8, 9, 5, 4], [8, 9, 5, 4, 8, 3, 5])); // false, разные значения
