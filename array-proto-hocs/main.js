@@ -1,9 +1,13 @@
 function compareArrays(arr1, arr2) {
-   if (arr1.length === arr2.length) {
-     return arr1.every((item, i) => item === arr2[i]); 
-   } else {
-     return false;
-   }
+  if (arr1.length === arr2.length) {
+     if (arr1.every((item, i) => item === arr2[i])) { 
+     return true; 
+     } else {
+      return false;     
+     }
+  } else {
+    return false;
+  }
 }
 
 const sum = (a, b) => (a + b);
@@ -13,38 +17,37 @@ function memoize(fn, limit){
   let results = []; 
   return function () {
     let arrArguments = Array.from(arguments);
-    let index = 0; 
+    let indexFind; 
+    if (results.find(function (value, index) {
+        indexFind = index;
+        return compareArrays(arrArguments, results[index].arrArguments)})) {   
+      console.log("нашли в массиве" );
+      return results[indexFind].res;      
+    } else {
+      res = fn(...arrArguments);
+
     if (results.length > (limit - 1)) {
-      results.shift();
+       results.shift();
     }
 
-    if (results.length === 0) {
-      res = fn(...arrArguments);
-      results.push({arrArguments, res});
-      resPrint = results[0];
-      return resPrint;
-    } else {
-      results.forEach(function (item, index) {
-        if (compareArrays(item.arrArguments, arrArguments)) {
-          resPrint = item;
-        } else {
-          res = fn(...arrArguments);
-          results.push({arrArguments, res});       
-          resPrint = results[results.length - 1];
-        }
-      })
-    return resPrint;
+      results.push({arrArguments, res});   
+      console.log("подсчитано");
+      return res;
     }
-     
-  }
+    
+ }
+    
 }
 
 
 
 
-console.log(mSum(3, 4));
+
 console.log(mSum(3, 4)); // 7
+console.log(mSum(3, 4));
 console.log(mSum(13, 5)); // 18
+console.log(mSum(13, 5)); // 18
+console.log(mSum(53, 4)); // 57
 console.log(mSum(53, 4)); // 57
 console.log(mSum(5, 4)); // 9
 
