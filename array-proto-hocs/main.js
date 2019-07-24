@@ -1,14 +1,6 @@
 function compareArrays(arr1, arr2) {
-  if (arr1.length === arr2.length) {
-     if (arr1.every((item, i) => item === arr2[i])) { 
-     return true; 
-     } else {
-      return false;     
-     }
-  } else {
-    return false;
-  }
-}
+  return (arr1.length === arr2.length && arr1.every((item, i) => item === arr2[i]));
+ }
 
 const sum = (a, b) => (a + b);
 const mSum = memoize(sum, 2); 
@@ -17,20 +9,19 @@ function memoize(fn, limit){
   let results = []; 
   return function () {
     let arrArguments = Array.from(arguments);
-    let indexFind; 
+    let valueFind; 
     if (results.find(function (value, index) {
-        indexFind = index;
+        valueFind = value.res;
         return compareArrays(arrArguments, results[index].arrArguments)})) {   
       console.log("нашли в массиве" );
-      return results[indexFind].res;      
+      return valueFind;      
     } else {
       res = fn(...arrArguments);
-
+      results.push({arrArguments, res});  
     if (results.length > (limit - 1)) {
        results.shift();
     }
-
-      results.push({arrArguments, res});   
+   
       console.log("подсчитано");
       return res;
     }
