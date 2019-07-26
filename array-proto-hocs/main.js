@@ -5,30 +5,29 @@ function compareArrays(arr1, arr2) {
 const sum = (a, b) => (a + b);
 const mSum = memoize(sum, 2); 
 
-function memoize(fn, limit){
+
+function memoize(fn, limit) {
   let results = []; 
   return function () {
     let arrArguments = Array.from(arguments);
-    let valueFind; 
-    if (results.find(function (value, index) {
-        valueFind = value.res;
-        return compareArrays(arrArguments, results[index].arrArguments)})) {   
-      console.log("нашли в массиве" );
-      return valueFind;      
-    } else {
+    let valueFind = results.find(function (value, index) {
+    return compareArrays(arrArguments, results[index].arrArguments);
+    });   
+    if (valueFind === undefined) {
       res = fn(...arrArguments);
-      results.push({arrArguments, res});  
-    if (results.length > (limit - 1)) {
+      results.push({arrArguments, res}); 
+      console.log("подсчитано");
+    } else {
+      console.log("нашли в массиве" );
+      res = valueFind.res;
+    }
+
+    if (results.length > (limit)) {
        results.shift();
     }
-   
-      console.log("подсчитано");
       return res;
-    }
-    
- }
-    
-}
+  }
+}//memoize
 
 
 
