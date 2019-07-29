@@ -1,6 +1,5 @@
 function setAlarm(time, callback) {
- 
-  return setInterval((() => { 
+  function sysTime() { 
     let now = new Date();
     let nowHours, nowMinutes;
     if (now.getHours() < 10) {
@@ -13,12 +12,12 @@ function setAlarm(time, callback) {
     } else {
       nowMinutes = now.getMinutes();
     }
-    let nowString = nowHours + ":" + nowMinutes; 
-    if (time == nowString) {
+    let nowString = nowHours + ":" + nowMinutes;
+    return nowString;
+  } 
+    if (time == sysTime()) {
     return callback();
-    }
-  }), 1000);
- 
+    } 
 }
 
 function setDailyRhythm(wakeUpTime, bedTime) {
@@ -30,10 +29,11 @@ function setDailyRhythm(wakeUpTime, bedTime) {
   function sweetDream() {
     console.log("Спокойной ночи, Вася!");
   }
-  setAlarm(wakeUpTime, goodMorning);
-  setAlarm(bedTime, sweetDream);
+
+  setInterval(setAlarm, 1000, wakeUpTime, goodMorning);
+  setInterval(setAlarm, 1000, bedTime, sweetDream); 
 }
 
-setDailyRhythm("07:26", "13:38");
+setDailyRhythm("10:36", "10:36");
 
 
